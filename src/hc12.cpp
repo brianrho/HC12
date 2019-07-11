@@ -1,7 +1,7 @@
 /* Written by Brian Ejike (2019)
  * DIstributed under the MIT License */
  
-#include <hc12.h>
+#include "hc12.h"
 #include <Arduino.h>
 
 #define HC12_PACKET_HEADER      0xAF

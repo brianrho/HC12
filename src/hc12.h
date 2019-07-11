@@ -15,9 +15,9 @@
 
 /* only used internally */
 typedef enum {
-	HC12_STATE_READ_HEADER,
+    HC12_STATE_READ_HEADER,
     HC12_STATE_READ_INFO,
-	HC12_STATE_READ_PAYLOAD,
+    HC12_STATE_READ_PAYLOAD,
 } hc12_state_e;
 
 
