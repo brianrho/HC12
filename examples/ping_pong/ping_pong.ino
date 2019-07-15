@@ -1,15 +1,17 @@
+/* Test bidirectional communication between 2 nodes */
+
 #if defined(ARDUINO_ARCH_ESP32)
 #include <HardwareSerial.h>
 #else
 #include <SoftwareSerial.h>
 #endif
 
-#include <HC12.h>
+#include <hc12.h>
 
 #define PINGER      1
 #define PONGER      2
 
-/* set role as PINGER or PONGER */
+/* set one device as PINGER and the other as PONGER */
 #define ROLE        PINGER
 
 #if defined(ARDUINO_ARCH_ESP32)
@@ -36,6 +38,8 @@ void setup(void) {
     #else
     hc12.begin(pong_addr);
     #endif
+
+    Serial.println("Starting up.");
 }
 
 char ping_payload[] = "Knock knock.";
@@ -57,10 +61,10 @@ void loop(void) {
     
     /* read and print anything we've recved */
     uint8_t src;
-    int16_t rlen = hc12.recv(buffer, HC12_MAX_PACKET_LEN, &src)
+    int16_t rlen = hc12.recv(buffer, HC12_MAX_PACKET_LEN, &src);
     if (rlen > 0) {
-        Serial.print("RECVED: ")
-        Serial.write(buffer, rlen);
+        Serial.print("From "); Serial.print(src); Serial.print(": ");
+        Serial.write((uint8_t *)buffer, rlen);
         Serial.println();
     }
     
@@ -68,10 +72,10 @@ void loop(void) {
     
     /* read and print anything we've recved */
     uint8_t src;
-    int16_t rlen = hc12.recv(buffer, HC12_MAX_PACKET_LEN, &src)
+    int16_t rlen = hc12.recv(buffer, HC12_MAX_PACKET_LEN, &src);
     if (rlen > 0) {
         Serial.print("From "); Serial.print(src); Serial.print(": ");
-        Serial.write(buffer, rlen);
+        Serial.write((uint8_t *)buffer, rlen);
         Serial.println();
         
         /* send pong response */
