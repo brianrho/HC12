@@ -14,6 +14,7 @@ HC12::HC12(Stream * port) :
 
 bool HC12::begin(uint8_t address) {
     own_addr = address;
+    return true;
 }
 
 
@@ -44,7 +45,7 @@ uint8_t HC12::send(const void * data, uint8_t len, uint8_t dest) {
     /* send data and 2's complete chksum */
     port->write(ptr, to_write);
     port->write(~chksum + 1);
-
+    
     return to_write;
 }
 
@@ -142,6 +143,8 @@ int16_t HC12::recv(void * data, uint8_t len, uint8_t * src) {
     /* only if its for us or a broadcast */
     if (dest == own_addr || dest == HC12_BROADCAST_ADDRESS)
         return rlen;
+    
+    return 0;
 }
 
 uint8_t HC12::get_address(void) {
